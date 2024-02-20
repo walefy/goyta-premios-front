@@ -8,10 +8,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import { UserContext } from '@/context/UserContext';
 import { GoytaBackend } from '@/entities/GoytaBackend';
 import { adminCreationSchema } from '@/schemas/userCreationSchema';
 import { AdminCreation } from '@/types/UserCreation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +21,7 @@ const backend = new GoytaBackend();
 
 export function CreateAdminAccount() {
   const { toast } = useToast();
+  const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
   const form = useForm<AdminCreation>({
     resolver: zodResolver(adminCreationSchema),
@@ -41,6 +44,7 @@ export function CreateAdminAccount() {
     }
 
     window.sessionStorage.setItem('token', loginResult.data); // TODO: use a better way to store the token
+    await fetchUser(loginResult.data);
     navigate('/home');
   };
 

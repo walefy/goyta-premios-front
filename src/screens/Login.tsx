@@ -8,18 +8,21 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 import { GoytaBackend } from '@/entities/GoytaBackend';
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { loginSchema } from '@/schemas/loginSchema';
 import { loginType } from '@/types/loginType';
+import { useContext } from 'react';
+import { UserContext } from '@/context/UserContext';
 
 const backend = new GoytaBackend();
 
 export function Login() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { fetchUser } = useContext(UserContext);
 
   const form = useForm<loginType>({
     resolver: zodResolver(loginSchema),
@@ -38,8 +41,9 @@ export function Login() {
     }
 
     window.sessionStorage.setItem('token', loginResult.data); // TODO: use a better way to store the token
+    await fetchUser(loginResult.data);
     navigate('/home');
-  }
+  };
 
   return (
     <div className='flex flex-col gap-y-20 justify-center items-center w-full h-screen'>

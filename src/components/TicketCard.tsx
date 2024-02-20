@@ -8,7 +8,7 @@ type TicketCardProps = {
 
 export function TicketCard({ ticket }: TicketCardProps) {
   return (
-    <Card className='lg:w-2/12'>
+    <Card className="lg:w-2/12">
       <CardHeader>
         <CardTitle>{ticket.name}</CardTitle>
         <CardDescription>{ticket.description}</CardDescription>

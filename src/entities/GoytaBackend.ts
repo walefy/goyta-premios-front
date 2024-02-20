@@ -1,4 +1,5 @@
 import { AdminCreation, UserCreation } from '@/types/UserCreation';
+import { jwtDecode } from 'jwt-decode';
 
 export class GoytaBackend {
   #url = 'http://localhost:3001';
@@ -52,6 +53,22 @@ export class GoytaBackend {
     }
 
     return { success: false, data: data.message };
+  }
+
+  async findUser(token: string) {
+    const userId = jwtDecode(token) as { id: string };
+    const response = await fetch(`${this.#url}/user/${userId.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { success: false, data: data.message };
+    }
+
+    return { success: true, data };
   }
 
   async getAllSweepstakes(token: string) {

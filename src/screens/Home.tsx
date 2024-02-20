@@ -1,3 +1,4 @@
+import { Header } from '@/components/Header';
 import { TicketCard } from '@/components/TicketCard';
 import { useToast } from '@/components/ui/use-toast';
 import { GoytaBackend } from '@/entities/GoytaBackend';
@@ -43,8 +44,9 @@ export function Home() {
   }
 
   return (
-    <div className='p-3'>
-      <div className='flex flex-col justify-center gap-2 lg:flex-row lg:flex-wrap'>
+    <div className="flex flex-col gap-y-5">
+      <Header />
+      <div className='flex flex-col justify-center px-2 gap-2 lg:flex-row lg:flex-wrap'>
         {sweepstakes.map((sweepstake: ITicket) => (
           <TicketCard key={sweepstake.id} ticket={sweepstake} />
         ))}
