@@ -1,3 +1,4 @@
+import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { TicketCard } from '@/components/TicketCard';
 import { useToast } from '@/components/ui/use-toast';
@@ -44,13 +45,14 @@ export function Home() {
   }
 
   return (
-    <div className="flex flex-col gap-y-5">
-      <Header />
+    <div className="flex flex-col gap-y-5 pt-5 pb-14 lg:pb-0 lg:pt-0">
+      {window.innerWidth >= 768 && <Header />}
       <div className='flex flex-col justify-center px-2 gap-2 lg:flex-row lg:flex-wrap'>
         {sweepstakes.map((sweepstake: ITicket) => (
           <TicketCard key={sweepstake.id} ticket={sweepstake} />
         ))}
       </div>
+      {window.innerWidth < 768 && <Footer />}
     </div>
   );
 }

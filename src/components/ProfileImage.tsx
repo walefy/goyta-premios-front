@@ -7,7 +7,7 @@ export function ProfileImage() {
   const { user } = useContext(UserContext);
 
   return (
-    <Avatar className="hover:cursor-pointer">
+    <Avatar className="hover:cursor-pointer size-[32px]">
       <AvatarImage src={user?.image} alt="Avatar" />
       <AvatarFallback>{user?.name.slice(0, 2).toLocaleUpperCase() || 'US'}</AvatarFallback>
     </Avatar>
