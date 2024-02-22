@@ -82,39 +82,33 @@ export function TicketDetails() {
     return quotas.find((quota) => quota.drawnNumber === quotaNumber)?.status === 'available';
   };
 
+  const showErrorToast = (description: string) => {
+    toast({
+      variant: 'destructive',
+      title: 'Erro',
+      description,
+      duration: 5000,
+    });
+  };
+
   const handleBuyQuota = async (quotaNumber: string) => {
     const updatedTicket = await refreshTicket();
 
     if (!updatedTicket) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro',
-        description: 'Erro ao atualizar a cota',
-        duration: 5000,
-      });
+      showErrorToast('Erro ao atualizar o bilhete. Tente novamente mais tarde.');
       return;
     }
 
     const { quotas } = updatedTicket;
 
     if (!quotaIsAvailable(quotaNumber, quotas)) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro',
-        description: 'Cota já comprada ou indisponível',
-        duration: 5000,
-      });
+      showErrorToast('Cota já comprada ou indisponível');
       return;
     }
     const { success, data } = await backend.buyQuota(token, id as string, quotaNumber);
 
     if (!success) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro',
-        description: data,
-        duration: 5000,
-      });
+      showErrorToast(data);
       return;
     }
 
