@@ -37,6 +37,7 @@ export function TicketDetails() {
           description: 'Token ou id inválidos',
           duration: 5000,
         });
+
         setTimeout(() => navigate('/home'), 5000);
         return;
       }
@@ -55,16 +56,17 @@ export function TicketDetails() {
         description: data,
         duration: 5000,
       });
+      setTimeout(() => navigate('/'), 5000);
     }
 
     fetchTicket();
   }, [id, navigate, toast]);
 
-  const refreshTicket = async (): Promise<ITicket | null> => {
+  const refreshTicket = async (setState = false): Promise<ITicket | null> => {
     const { success, data } = await backend.getTicketById(token, id as string);
 
     if (success) {
-      setTicket(data);
+      if (setState) setTicket(data);
       return data;
     }
 
@@ -77,7 +79,6 @@ export function TicketDetails() {
   };
 
   const quotaIsAvailable = (quotaNumber: string, quotas: IQuota[]) => {
-    console.log(quotas.find((quota) => quota.drawnNumber === quotaNumber));
     return quotas.find((quota) => quota.drawnNumber === quotaNumber)?.status === 'available';
   };
 
@@ -118,7 +119,7 @@ export function TicketDetails() {
     }
 
     window.open(data.externalUrl, '_blank');
-    refreshTicket();
+    refreshTicket(true);
   };
 
   return (
